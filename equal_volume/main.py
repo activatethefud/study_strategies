@@ -7,7 +7,7 @@ assert(len(sys.argv) == 2)
 
 
 INPUT_FILE = sys.argv[1]
-TUNING = 5
+TUNING = 7
 
 data = []
 
@@ -60,8 +60,8 @@ def get_times(data,coefs):
 
 def sum_times(data,_coefs):
 
-	#start = dt.datetime.today()
-	start = dt.datetime.today() + dt.timedelta(days=6)
+	start = dt.datetime.today()
+	#start = dt.datetime.today() + dt.timedelta(days=6)
 	#start = dt.datetime(2020,1,3)
 	end = data[len(data)-1][1]
 
@@ -102,7 +102,8 @@ print(solutions)
 
 def gen_optimal(data,coefs,time):
 
-	today = dt.datetime.today()
+	#today = dt.datetime.today()
+	today = dt.datetime.today() + dt.timedelta(days=6)
 
 	for index in range(len(coefs)):
 
