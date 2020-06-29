@@ -60,8 +60,8 @@ def get_times(data,coefs):
 
 def sum_times(data,_coefs):
 
-	start = dt.datetime.today()
-	#start = dt.datetime.today() + dt.timedelta(days=3)
+	#start = dt.datetime.today()
+	start = dt.datetime.today() + dt.timedelta(days=6)
 	#start = dt.datetime(2020,1,3)
 	end = data[len(data)-1][1]
 
@@ -109,7 +109,8 @@ def gen_optimal(data,coefs,time):
 		if (data[index][1] - today).days <= 0:
 			coefs[index] = 0
 
-	coefs *= time*0.1
+	coefs_sum = sum(coefs)
+	coefs *= time*1.0/coefs_sum
 
 	for index in range(len(coefs)):
 
