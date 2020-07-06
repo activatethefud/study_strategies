@@ -1,16 +1,14 @@
 import numpy as np
 import datetime as dt
 import sys
-import matplotlib as plt
+import math
 
-assert(len(sys.argv) == 2)
-
+assert(len(sys.argv) >= 2)
 
 INPUT_FILE = sys.argv[1]
 TUNING = 7
 
 data = []
-
 solutions = []
 
 def perms(arr,index):
@@ -42,7 +40,12 @@ with open(INPUT_FILE,"r") as file_handler:
 			dt.datetime.strptime(line[1],"%d/%m/%Y")
 		]))
 	
+	data = [x for x in data if (x[1] - dt.datetime.today()).days > 0]
+	
 	file_handler.close()
+
+# Sort the data by date
+data.sort(key = lambda x : x[1])
 
 
 def get_times(data,coefs):
@@ -60,10 +63,10 @@ def get_times(data,coefs):
 
 def sum_times(data,_coefs):
 
-	start = dt.datetime.today()
+	start = dt.datetime.today() - dt.timedelta(days=1) # Because datetime counts FULL days only
 	#start = dt.datetime.today() + dt.timedelta(days=6)
 	#start = dt.datetime(2020,1,3)
-	end = data[len(data)-1][1]
+	end = data[-1][1]
 
 	coefs = np.copy(_coefs)
 
@@ -102,19 +105,73 @@ print(solutions)
 
 def gen_optimal(data,coefs,time):
 
-	#today = dt.datetime.today()
-	today = dt.datetime.today() + dt.timedelta(days=6)
+	today = dt.datetime.today() - dt.timedelta(days=1) # Because datetime counts FULL days only
+	#today = dt.datetime.today() + dt.timedelta(days=6)
 
-	for index in range(len(coefs)):
+	#for index in range(len(coefs)):
 
-		if (data[index][1] - today).days <= 0:
-			coefs[index] = 0
+	#	if (data[index][1] - today).days <= 0:
+	#		coefs[index] = 0
 
 	coefs_sum = sum(coefs)
 	coefs *= time*1.0/coefs_sum
 
-	for index in range(len(coefs)):
+	global optimal_coefs
+	optimal_coefs = coefs
 
-		print(data[index][0] + " " + str(coefs[index]))
+	return coefs
 
-gen_optimal(data,solutions[0][0],int(eval(input("Time: "))))
+def pomodoro(time):
+	
+	p = 25
+	s = 7
+	l = 25
+
+	time_x = 0
+
+	def expression(x,p,l,s,n):
+		
+		pc = math.floor(x/p)
+
+		return x + (pc - math.floor(pc/4))*s + math.floor(pc/4)*l + (n-1)*s
+	
+	while expression(time_x,p,l,s,len(data)) <= time:
+		time_x += 1
+
+	return time_x - 1
+
+	
+def simulate(data,coefs,time):
+	
+	today = dt.datetime.today() - dt.timedelta(days=1)
+	due = data[-1][1]
+
+	while (due - today).days > 0:
+
+		for index in range(len(coefs)):
+
+			if (data[index][1] - today).days <= 0:
+				coefs[index] = 0
+		
+		print(get_times(data,coefs))
+
+		today += dt.timedelta(days=1)
+	
+
+def print_plan(data,time):
+	
+	for index in range(len(data)):
+
+		print(data[index][0] + ": " + str(time[index]) + " " + str((data[index][1] - dt.datetime.today()).days + 1))
+
+#gen_optimal(data,solutions[0][0],int(eval(input("Time: "))))
+#simulate(data,optimal_coefs,200)
+
+time = int(eval(input("Time: ")))
+
+best_solution = solutions[0][0]
+
+if len(sys.argv) > 2 and sys.argv[2] == "-p":
+	print_plan(data,gen_optimal(data,best_solution,pomodoro(time)))
+else:
+	print_plan(data,gen_optimal(data,best_solution,time))
