@@ -1,8 +1,10 @@
 from time import sleep
 import subprocess
+import sys
 
 second = 1
 minute = 60 * second
+step = 1 * second
 
 # POMODORO
 
@@ -10,29 +12,58 @@ p = 25
 s = 7
 l = 25
 
+since_pomodoro = 0
+
 time = int(input("Time (minutes): "))*60
 title = input("Title: ")
 
+
 def sleep_for(time,title):
 
-	try:
-		while time > 0:
+	while time > 0:
+		try:
 			subprocess.run("clear")
 			print(title + "\n" + "Time left: " + str(time))
 
 			sleep(minute)
 			time -= 1
-	except KeyboardInterrupt:
-		return 0
+		except KeyboardInterrupt:
+			break
+	
+	return 0
 
+def alert(msg,sound_file,detach=None):
+	
+	date = subprocess.run("date",text=True,capture_output=True).stdout.rstrip('\n')
+
+	# Notification
+
+	if(msg is not None):
+		subprocess.run(["notify-send","-t","0",date,msg])
+
+	# Sound
+	if(sound_file is not None):
+		if detach is None:
+			subprocess.Popen(["mpv","--no-video",sound_file])
+		else:
+			subprocess.run(["mpv","--no-video",sound_file])
+
+
+# Main
 
 while time > 0:
 	try:
 		subprocess.run("clear")
-		print(title + "\n" + "Time left: " + str(time/60))
+		print(title)
+		print("Since last pomodoro: " + str(since_pomodoro/60))
+		print("Time left: " + str(time/60))
+
+		if since_pomodoro != 0 and (since_pomodoro)%(p*60) == 0:
+			alert("Break time","./pomodoro_alert.mp3")
 
 		sleep(second)
-		time -= 1
+		time -= step
+		since_pomodoro += step
 	except KeyboardInterrupt:
 		opt = input("Paused. Press any key to continue\n")
 
@@ -41,6 +72,10 @@ while time > 0:
 			opt = input("Short or long break [s/l]?: ")
 
 			if opt == "s":
-				sleep_for(s,"Short break")
+				since_pomodoro = sleep_for(s,"Short break")
 			elif opt == "l":
-				sleep_for(l,"Long break")
+				since_pomodoro = sleep_for(l,"Long break")
+
+			alert("Break over","./break_over.mp3")
+
+alert("Done - " + title,"./done.mp3",detach = False)
