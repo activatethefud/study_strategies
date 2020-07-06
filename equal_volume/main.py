@@ -122,6 +122,8 @@ def gen_optimal(data,coefs,time):
 	return coefs
 
 def pomodoro(time):
+
+	# POMODORO
 	
 	p = 25
 	s = 7
@@ -164,8 +166,7 @@ def print_plan(data,time):
 
 		print(data[index][0] + ": " + str(time[index]) + " " + str((data[index][1] - dt.datetime.today()).days + 1))
 
-#gen_optimal(data,solutions[0][0],int(eval(input("Time: "))))
-#simulate(data,optimal_coefs,200)
+# Main
 
 time = int(eval(input("Time: ")))
 
