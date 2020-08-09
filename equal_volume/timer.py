@@ -13,10 +13,20 @@ s = 7
 l = 25
 
 since_pomodoro = 0
+pomodoro_counter = 0
+POMODORO_COUNTER_FILE = "pomodoro_counter.txt"
+
+# Set the pomodoro counter
+try:
+	file_handler = open(POMODORO_COUNTER_FILE,"r")
+	pomodoro_counter = int(file_handler.read())
+	file_handler.close()
+except:
+	pass
+
 
 time = int(input("Time (minutes): "))*60
 title = input("Title: ")
-
 
 def sleep_for(time,title):
 
@@ -49,6 +59,11 @@ def alert(msg,sound_file,detach=None):
 			subprocess.run(["mpv","--no-video",sound_file])
 
 
+def pomodoro_count_increase(counter,filename):
+	
+	file_handler = open(filename,"w")
+	file_handler.write(str(counter))
+	file_handler.close()
 # Main
 
 while time > 0:
@@ -56,10 +71,13 @@ while time > 0:
 		subprocess.run("clear")
 		print(title)
 		print("Since last pomodoro: " + str(since_pomodoro/60))
+		print("Pomodoro count: " + str(pomodoro_counter))
 		print("Time left: " + str(time/60))
 
 		if since_pomodoro != 0 and (since_pomodoro)%(p*60) == 0:
 			alert("Break time","./pomodoro_alert.mp3")
+			pomodoro_counter += 1
+			pomodoro_count_increase(pomodoro_counter,POMODORO_COUNTER_FILE)
 
 		sleep(second)
 		time -= step
