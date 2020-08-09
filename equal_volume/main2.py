@@ -6,7 +6,7 @@ import math
 assert(len(sys.argv) >= 2)
 
 INPUT_FILE = sys.argv[1]
-TUNING = 7
+TUNING = 13
 
 data = []
 solutions = []
@@ -80,6 +80,18 @@ def sum_times(data,_coefs):
 	return times_sum
 
 def solution_rating(total_times):
+
+	max_ = total_times[0]
+	min_ = total_times[0]
+
+	for i in range(len(total_times)):
+
+		max_ = max(max_,total_times[i])
+		min_ = min(min_,total_times[i])
+
+	return max_ - min_
+
+def solution_rating2(total_times):
 	
 	avg = sum(total_times)*1.0/len(total_times)
 
@@ -141,7 +153,11 @@ def simulate(data,coefs,time):
 		time_total += get_times(data,coefs,coefs_sum,time)
 	
 	plt.bar(range(len(time_total)),time_total)
-	plt.show()
+
+	for i in range(len(time_total)):
+		plt.annotate(str(time_total[i]),(i,time_total[i]))
+
+	plt.savefig(dt.datetime.today().strftime("%s") + ".png")
 	
 
 def print_plan(data,time):
