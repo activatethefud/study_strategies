@@ -2,14 +2,18 @@ import numpy as np
 import datetime as dt
 import sys
 import math
+import copy
 
 assert(len(sys.argv) >= 2)
 
 INPUT_FILE = sys.argv[1]
-TUNING = 13
+TUNING = 10
 
 data = []
 solutions = []
+
+today = dt.datetime.today()
+#today = dt.datetime.strptime(input("Date: "),"%d/%m/%Y") + dt.timedelta(days=1)
 
 def perms(arr,index):
 
@@ -40,7 +44,7 @@ with open(INPUT_FILE,"r") as file_handler:
 			dt.datetime.strptime(line[1],"%d/%m/%Y")
 		]))
 	
-	data = [x for x in data if (x[1] - dt.datetime.today() + dt.timedelta(days=1)).days > 0]
+	data = [x for x in data if (x[1] - today + dt.timedelta(days=1)).days > 0]
 	
 	file_handler.close()
 
@@ -55,9 +59,6 @@ def get_times(data,coefs,coefs_sum,time = 1.0):
 
 def sum_times(data,_coefs):
 
-	start = dt.datetime.today() - dt.timedelta(days=1) # Because datetime counts FULL days only
-	#start = dt.datetime.today() + dt.timedelta(days=6)
-	#start = dt.datetime(2020,1,3)
 	end = data[-1][1]
 
 	coefs = np.copy(_coefs)
@@ -68,7 +69,7 @@ def sum_times(data,_coefs):
 	for index in range(len(data)):
 
 		if index == 0:
-			multiplication_coef = (data[index][1] - dt.datetime.today()).days + 1
+			multiplication_coef = (data[index][1] - today).days + 1
 		else:
 			multiplication_coef = (data[index][1] - data[index-1][1]).days
 
@@ -79,7 +80,17 @@ def sum_times(data,_coefs):
 
 	return times_sum
 
-def solution_rating(total_times):
+def solution_rating2(total_times):
+	
+	diff_cumulative = 0
+
+	for i in range(1,len(total_times)):
+
+		diff_cumulative += abs(total_times[i] - total_times[i-1])
+	
+	return diff_cumulative
+
+def solution_rating3(total_times):
 
 	max_ = total_times[0]
 	min_ = total_times[0]
@@ -91,7 +102,7 @@ def solution_rating(total_times):
 
 	return max_ - min_
 
-def solution_rating2(total_times):
+def solution_rating(total_times):
 	
 	avg = sum(total_times)*1.0/len(total_times)
 
@@ -135,24 +146,25 @@ def simulate(data,coefs,time):
 	
 	import matplotlib.pyplot as plt
 	
-	today = dt.datetime.today() - dt.timedelta(days=1)
+	today_ = copy.copy(today)
 	due = data[-1][1]
 
 	coefs_sum = sum(coefs)
 	time_total = np.resize([],len(coefs))
 
-	while (due - today).days > 0:
+	while (due - today_).days > 0:
 
 		for index in range(len(coefs)):
 
-			if (data[index][1] - today).days <= 0:
+			if (data[index][1] - today_).days <= 0:
 				coefs_sum -= coefs[index]
 				coefs[index] = 0
 		
-		today += dt.timedelta(days=1)
+		today_ += dt.timedelta(days=1)
 		time_total += get_times(data,coefs,coefs_sum,time)
 	
 	plt.bar(range(len(time_total)),time_total)
+	plt.title("Date: %s, Tuning: %d" % ((today - dt.timedelta(days=1)).strftime("%d/%m/%Y"),TUNING))
 
 	for i in range(len(time_total)):
 		plt.annotate(str(time_total[i]),(i,time_total[i]))
@@ -164,7 +176,7 @@ def print_plan(data,time):
 
 	for index in range(len(data)):
 
-		print(data[index][0] + ": " + str(time[index]) + " " + str((data[index][1] - dt.datetime.today()).days + 1))
+		print(data[index][0] + ": " + str(time[index]) + " " + str((data[index][1] - today).days + 1))
 
 # Main
 

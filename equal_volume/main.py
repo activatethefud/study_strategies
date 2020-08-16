@@ -146,7 +146,7 @@ def pomodoro(time):
 	
 def simulate(data,coefs,time):
 	
-	today = dt.datetime.today() - dt.timedelta(days=1)
+	global today
 	due = data[-1][1]
 
 	while (due - today).days > 0:
