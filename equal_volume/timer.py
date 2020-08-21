@@ -8,7 +8,7 @@ step = 1 * second
 
 # POMODORO
 
-p = 25
+p = 40
 s = 7
 l = 25
 
@@ -64,6 +64,15 @@ def pomodoro_count_increase(counter,filename):
 	file_handler = open(filename,"w")
 	file_handler.write(str(counter))
 	file_handler.close()
+
+def pomodoro_count_get(filename):
+	
+	file_handler = open(filename,"r")
+
+	count = int(file_handler.read())
+	file_handler.close()
+
+	return count
 # Main
 
 while time > 0:
@@ -75,6 +84,7 @@ while time > 0:
 		print("Time left: " + str(time/60))
 
 		if since_pomodoro != 0 and (since_pomodoro)%(p*60) == 0:
+			pomodoro_count_get(POMODORO_COUNTER_FILE)
 			alert("Break time","./pomodoro_alert.mp3")
 			pomodoro_counter += 1
 			pomodoro_count_increase(pomodoro_counter,POMODORO_COUNTER_FILE)

@@ -8,11 +8,11 @@ from matplotlib import pyplot as plt
 assert(len(sys.argv) >= 2)
 
 INPUT_FILE = sys.argv[1]
-TUNING = 10
+TUNING = 12
 
 
-today_ = dt.datetime.today()
-due = dt.datetime(2020,9,5)
+today_ = dt.date.today()
+due = dt.date(2020,9,4)
 
 total = np.resize([],5)
 
@@ -21,7 +21,7 @@ def add_padded(array):
 	for index in range(len(array)):
 		total[-index-1] += array[-index-1]
 
-while today_ < due - dt.timedelta(days=1):
+while today_ < due:
 
 	data = []
 	solutions = []
@@ -54,10 +54,10 @@ while today_ < due - dt.timedelta(days=1):
 	
 			data.append(tuple([
 				line[0],
-				dt.datetime.strptime(line[1],"%d/%m/%Y")
+				dt.datetime.strptime(line[1],"%d/%m/%Y").date()
 			]))
 		
-		data = [x for x in data if (x[1] - today + dt.timedelta(days=1)).days > 0]
+		data = [x for x in data if (x[1] - today).days > 0]
 		
 		file_handler.close()
 	
@@ -93,16 +93,6 @@ while today_ < due - dt.timedelta(days=1):
 	
 		return times_sum
 	
-	def solution_rating2(total_times):
-		
-		diff_cumulative = 0
-	
-		for i in range(1,len(total_times)):
-	
-			diff_cumulative += abs(total_times[i] - total_times[i-1])
-		
-		return diff_cumulative
-	
 	def solution_rating(total_times):
 	
 		max_ = total_times[0]
@@ -115,7 +105,7 @@ while today_ < due - dt.timedelta(days=1):
 	
 		return max_ - min_
 	
-	def solution_rating3(total_times):
+	def solution_rating2(total_times):
 		
 		avg = sum(total_times)*1.0/len(total_times)
 	
@@ -176,12 +166,12 @@ while today_ < due - dt.timedelta(days=1):
 			time_total += get_times(data,coefs,coefs_sum,time)
 		
 		plt.bar(range(len(time_total)),time_total)
-		plt.title("Date: %s, Tuning: %d" % ((today - dt.timedelta(days=1)).strftime("%d/%m/%Y"),TUNING))
+		plt.title("Date: %s, Tuning: %d" % ((today).strftime("%d/%m/%Y"),TUNING))
 	
 		for i in range(len(time_total)):
 			plt.annotate(str(time_total[i]),(i,time_total[i]))
 	
-		plt.savefig(dt.datetime.today().strftime("%s") + ".png")
+		plt.savefig(dt.date.today().strftime("%s") + ".png")
 		
 	
 	def print_plan(data,time):
