@@ -1,12 +1,13 @@
 # Comments are ignored
 #
 #
-OS,5/9/2020
-AN2,30/8/2020
-GEOM,1/9/2020
-KIA,4/9/2020
-AL1,29/8/2020
-KIA usmeni,11/9/2020
-AN2 usmeni,3/9/2020
+
+# Sept 1
+OS Usmeni,14/9/2020
+AN2 Usmeni,9/9/2020
+
+# Sept 2
+#KIA,4/9/2020
+#KIA usmeni,11/9/2020
 UOAR2 prakticni,6/9/2020
 UOAR2 pismeni,13/9/2020

@@ -33,7 +33,7 @@ with open(INPUT_FILE,"r") as file_handler:
 
 	for line in file_handler.readlines():
 		
-		if line[0] == '#':
+		if line[0] == '#' or line[0] == '\n':
 			continue
 
 		line = line.rstrip('\n').split(",")
@@ -113,8 +113,9 @@ print("Tuning: " + str(TUNING))
 
 perms(arr,0,TUNING)
 
-solutions.sort(key = lambda x : x[1])
-#print(solutions[::-1])
+#solutions.sort(key = lambda x : x[1])
+print(solutions[::-1])
+
 
 def pomodoro(time):
 
@@ -122,7 +123,7 @@ def pomodoro(time):
 	
 	p = 40
 	s = 7
-	l = 25
+	l = 7
 
 	time_x = 0
 
