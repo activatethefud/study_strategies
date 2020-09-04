@@ -94,20 +94,20 @@ def sum_times(data, _coefs):
     return times_sum
 
 
+#def solution_rating2(total_times):
+#
+#    max_ = total_times[0]
+#    min_ = total_times[0]
+#
+#    for i in range(len(total_times)):
+#
+#        max_ = max(max_, total_times[i])
+#        min_ = min(min_, total_times[i])
+#
+#    return max_ - min_
+#
+
 def solution_rating(total_times):
-
-    max_ = total_times[0]
-    min_ = total_times[0]
-
-    for i in range(len(total_times)):
-
-        max_ = max(max_, total_times[i])
-        min_ = min(min_, total_times[i])
-
-    return max_ - min_
-
-
-def solution_rating2(total_times):
 
     avg = sum(total_times)*1.0/len(total_times)
 
@@ -133,7 +133,7 @@ print("Tuning: " + str(TUNING))
 perms(arr, 0, TUNING)
 
 solutions.sort(key=lambda x: x[1])
-print(solutions[::-1])
+#print(solutions[::-1])
 
 def pomodoro(time):
 
@@ -197,6 +197,7 @@ def print_plan(data, time):
 # Main
 
 
+print(solutions[0])
 time = int(eval(input("Time: ")))
 
 best_solution = solutions[0][0]

@@ -8,13 +8,13 @@ from matplotlib import pyplot as plt
 assert(len(sys.argv) >= 2)
 
 INPUT_FILE = sys.argv[1]
-TUNING = 12
+TUNING = 4
 
 
 today_ = dt.date.today()
-due = dt.date(2020,9,4)
+due = dt.date(2020,9,30)
 
-total = np.resize([],5)
+total = np.resize([],8)
 
 def add_padded(array):
 	
@@ -47,7 +47,7 @@ while today_ < due:
 	
 		for line in file_handler.readlines():
 			
-			if line[0] == '#':
+			if line[0] == '#' or line[0] == '\n':
 				continue
 	
 			line = line.rstrip('\n').split(",")
