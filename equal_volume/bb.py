@@ -13,10 +13,10 @@ solutions = []
 
 global_min = 10e10
 
-today = dt.date.today()
-#today = dt.datetime.strptime(input("Date: "),"%d/%m/%Y").date()
+#today = dt.date.today()
+today = dt.datetime.strptime(input("Date: "),"%d/%m/%Y").date()
 
-TUNING = 1000
+TUNING = 300
 
 def perms(arr, index, TUNING):
 
@@ -94,7 +94,7 @@ def sum_times(data, _coefs):
     return times_sum
 
 
-#def solution_rating2(total_times):
+#def solution_rating3(total_times):
 #
 #    max_ = total_times[0]
 #    min_ = total_times[0]
@@ -105,16 +105,24 @@ def sum_times(data, _coefs):
 #        min_ = min(min_, total_times[i])
 #
 #    return max_ - min_
-#
 
 def solution_rating(total_times):
+        
+        avg = sum(total_times)/len(total_times)
 
-    avg = sum(total_times)*1.0/len(total_times)
+        rating = 0
+
+        for index in range(len(total_times)):
+                rating += abs(total_times[index] - avg)
+
+        return rating
+
+
+def solution_rating2(total_times):
 
     rating = 0
-
-    for time in total_times:
-        rating += abs(time-avg)
+    for i in range(len(total_times)-1):
+            rating += abs(total_times[i] - total_times[i+1])
 
     return rating
 
@@ -184,7 +192,8 @@ def simulate(data, coefs, time):
     for i in range(len(time_total)):
         plt.annotate(str(time_total[i]), (i, time_total[i]))
 
-    plt.savefig(dt.datetime.today().strftime("%s") + ".png")
+    #plt.savefig(dt.datetime.today().strftime("%s") + ".png")
+    plt.show()
 
 
 def print_plan(data, time):
@@ -203,8 +212,8 @@ time = int(eval(input("Time: ")))
 best_solution = solutions[0][0]
 
 # Simulate and plot total times
-# simulate(data,best_solution,pomodoro(time))
-# sys.exit(0)
+#simulate(data,best_solution,pomodoro(time))
+#sys.exit(0)
 
 if len(sys.argv) > 2 and sys.argv[2] == "-p":
     print_plan(data, get_times(data, best_solution,

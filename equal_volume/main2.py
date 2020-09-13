@@ -92,6 +92,15 @@ def sum_times(data,_coefs):
 #	return max_ - min_
 
 def solution_rating(total_times):
+        avg = sum(total_times)/len(total_times)
+
+        rating = 0
+        for index in range(len(total_times)):
+                rating += abs(total_times[index] - avg)
+
+        return rating
+
+def solution_rating2(total_times):
 	
 	avg = sum(total_times)*1.0/len(total_times)
 
@@ -171,9 +180,12 @@ def simulate(data,coefs,time):
 
 def print_plan(data,time):
 
-	for index in range(len(data)):
+	with open("plan.txt","w") as file_handler:
 
-		print(data[index][0] + ": " + str(time[index]) + " " + str((data[index][1] - today).days))
+		for index in range(len(data)):
+	
+			print(data[index][0] + ": " + str(time[index]) + " " + str((data[index][1] - today).days),file=file_handler)
+			print(data[index][0] + ": " + str(time[index]) + " " + str((data[index][1] - today).days))
 
 # Main
 

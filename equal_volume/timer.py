@@ -24,9 +24,12 @@ try:
 except:
 	pass
 
-
-time = int(input("Time (minutes): "))*60
-title = input("Title: ")
+if len(sys.argv) == 3:
+	time = int(sys.argv[1])*60
+	title = sys.argv[2]
+else:
+	time = int(input("Time (minutes): "))*60
+	title = input("Title: ")
 
 def sleep_for(time,title):
 

@@ -2,18 +2,10 @@
 #
 #
 #
-# Sept 1
-OS Usmeni,14/9/2020
-AN2 Usmeni,10/9/2020
-
 # Sept 2
-#KIA,4/9/2020
-#KIA usmeni,11/9/2020
-UOAR2 prakticni,6/9/2020
-UOAR2 pismeni,13/9/2020
+OS Usmeni,22/9/2020
+AN2 Usmeni,23/9/2020
 
 # Sept 3
-KIA,18/9/2020
-KIA Usmeni,26/9/2020
-AN3,27/9/2020
-AN3 Usmeni,30/9/2020
+Algebra,26/9/2020
+UOAR2 Pismeni,27/9/2020

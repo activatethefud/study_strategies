@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 assert(len(sys.argv) >= 2)
 
 INPUT_FILE = sys.argv[1]
-TUNING = 1000
+TUNING = 100
 
 
 today_ = dt.date.today()
@@ -104,7 +104,7 @@ while today_ < due:
 
         return times_sum
 
-    def solution_rating(total_times):
+    def solution_rating2(total_times):
 
         max_ = total_times[0]
         min_ = total_times[0]
@@ -116,7 +116,7 @@ while today_ < due:
 
         return max_ - min_
 
-    def solution_rating2(total_times):
+    def solution_rating(total_times):
 
         avg = sum(total_times)*1.0/len(total_times)
 
@@ -132,6 +132,8 @@ while today_ < due:
 
     solutions.sort(key=lambda x: x[1])
     print(solutions[::-1])
+
+    sys.exit(0)
 
     def pomodoro(time):
 
